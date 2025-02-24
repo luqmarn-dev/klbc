@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+.login-background {
+  background-image: url("/public/images/background_batuu.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(6px);
+  -webkit-filter: blur(6px);
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.text-canva {
+  font-family: "Canva Sans", sans-serif;
+}
