@@ -1,11 +1,29 @@
 <div class="login-background"></div>
 <div class="container flex justify-content-center flex-wrap">
   <p-image src="images/logo_light.png" alt="Klbc logo" width="350"></p-image>
-  <div class="flex align-items-center justify-content-center p-3">
-    <h2 class="text-center text-canva">KLBC Check In</h2>
+  <div class="flex align-items-center justify-content-center p-3 text-lg">
+    <h2
+      *ngIf="!auth.currentUser && !checkedIn && !notSaturday"
+      class="text-center text-gochi"
+    >
+      KLBC Check In
+    </h2>
+    <h2
+      *ngIf="(auth.currentUser || checkedIn) && !notSaturday"
+      class="text-center text-gochi"
+    >
+      You're checked in
+    </h2>
+    <h2 *ngIf="notSaturday" class="text-center text-gochi" (click)="login()">
+      It's not Saturday my guy
+    </h2>
   </div>
   <div class="flex align-items-center justify-content-center p-3">
-    <button (click)="login()" class="gsi-material-button">
+    <button
+      *ngIf="!auth.currentUser && !checkedIn && !notSaturday"
+      (click)="login()"
+      class="gsi-material-button"
+    >
       <div class="gsi-material-button-state"></div>
       <div class="gsi-material-button-content-wrapper">
         <div class="gsi-material-button-icon">
@@ -39,5 +57,11 @@
         <span style="display: none">Sign in with Google</span>
       </div>
     </button>
+    <h2
+      *ngIf="(auth.currentUser || checkedIn) && !notSaturday"
+      class="text-center text-gochi"
+    >
+      Tengs n c u next week
+    </h2>
   </div>
 </div>
