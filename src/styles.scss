@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap");
+
 .login-background {
-  background-image: url("/public/images/background_batuu.jpg");
+  background-image: url("/images/background_batuu.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(6px);
@@ -14,4 +16,8 @@
 
 .text-canva {
   font-family: "Canva Sans", sans-serif;
+}
+
+.text-gochi {
+  font-family: "Gochi Hand", sans-serif;
 }
