@@ -2,7 +2,11 @@
 <div class="container flex flex-column justify-content-center flex-wrap">
   <p-image src="images/logo_light.png" alt="Klbc logo" width="350"></p-image>
   <div class="flex align-items-center justify-content-center p-3">
-    <h2 class="text-center text-gochi text-white">Rate the session</h2>
+    <h2
+      class="text-center text-gochi text-white fadein animation-duration-1000"
+    >
+      Rate the session
+    </h2>
   </div>
   <div class="flex align-items-center justify-content-center p-3">
     <p-rating [(ngModel)]="rating" stars="5">
@@ -11,6 +15,7 @@
           src="https://primefaces.org/cdn/primeng/images/demo/rating/cancel.png"
           height="24"
           width="24"
+          alt="cancel"
         />
       </ng-template>
       <ng-template #onicon>
@@ -18,6 +23,7 @@
           src="https://primefaces.org/cdn/primeng/images/demo/rating/custom-icon-active.png"
           height="24"
           width="24"
+          alt="on"
         />
       </ng-template>
       <ng-template #officon>
@@ -25,6 +31,7 @@
           src="https://primefaces.org/cdn/primeng/images/demo/rating/custom-icon.png"
           height="24"
           width="24"
+          alt="off"
         />
       </ng-template>
     </p-rating>

@@ -1,1 +1,29 @@
-<p>admin works!</p>
+<div class="login-background"></div>
+<p-dialog [modal]="true" [(visible)]="showQr">
+  <p-image [src]="qrImage" alt="QR code" width="300"></p-image>
+</p-dialog>
+<div class="container flex flex-column justify-content-center flex-wrap">
+  <p-image src="images/logo_light.png" alt="Klbc logo" width="350"></p-image>
+  <div class="flex align-items-center justify-content-center p-3 mt-3">
+    <p-button
+      label="Export data"
+      class="p-button-rounded text-canva"
+      (click)="onExport()"
+    ></p-button>
+  </div>
+  <div class="flex align-items-center justify-content-center p-3">
+    <p-button
+      label="Generate QR"
+      class="p-button-rounded text-canva"
+      (click)="onQR()"
+    ></p-button>
+  </div>
+
+  <div class="flex align-items-center justify-content-center p-3">
+    <p-button
+      label="Home"
+      class="p-button-rounded text-canva"
+      (click)="onHome()"
+    ></p-button>
+  </div>
+</div>

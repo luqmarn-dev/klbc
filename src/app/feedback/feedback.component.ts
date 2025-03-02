@@ -31,7 +31,11 @@ export class FeedbackComponent {
 
   onSubmit() {
     const now = new Date();
-    const gmtPlus8Date = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const offset = now.getTimezoneOffset() / 60;
+    const gmtPlus8Date =
+      offset === -8
+        ? now
+        : new Date(now.getTime() + (8 + offset) * 60 * 60 * 1000);
     const dateString = gmtPlus8Date.toISOString().split('T')[0];
     const db = getDatabase();
 
@@ -40,6 +44,7 @@ export class FeedbackComponent {
       email: this.user.email,
       name: this.user.displayName,
       rating: this.rating,
+      phone: this.user.phoneNumber,
     });
 
     this.router.navigate(['/login']);

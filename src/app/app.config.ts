@@ -11,6 +11,26 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
+import { definePreset } from '@primeng/themes';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+
+const MyPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: '#A02334',
+      100: '#A02334',
+      200: '#A02334',
+      300: '#A02334',
+      400: '#A02334',
+      500: '#A02334',
+      600: '#A02334',
+      700: '#A02334',
+      800: '#A02334',
+      900: '#A02334',
+      950: '#A02334',
+    },
+  },
+});
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,10 +48,14 @@ export const appConfig: ApplicationConfig = {
           'https://klbc-938a9-default-rtdb.asia-southeast1.firebasedatabase.app',
       })
     ),
+    provideDatabase(() => getDatabase()),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: MyPreset,
+        options: {
+          darkModeSelector: false || 'none',
+        },
       },
     }),
     provideRouter(routes),

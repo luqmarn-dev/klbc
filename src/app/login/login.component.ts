@@ -38,7 +38,11 @@ export class LoginComponent {
     private sharedService: SharedService
   ) {
     const now = new Date();
-    const gmtPlus8Date = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const offset = now.getTimezoneOffset() / 60;
+    const gmtPlus8Date =
+      offset === -8
+        ? now
+        : new Date(now.getTime() + (8 + offset) * 60 * 60 * 1000);
 
     this.notSaturday = gmtPlus8Date.getDay() !== 6;
   }
@@ -48,7 +52,7 @@ export class LoginComponent {
         const user = result.user;
         const db = getDatabase();
 
-        if (this.notSaturday && (await this.isAdmins(user, db))) {
+        if (!this.notSaturday && (await this.isAdmins(user, db))) {
           this.router.navigate(['/admin']);
           return;
         }
@@ -82,7 +86,11 @@ export class LoginComponent {
 
   private async isCheckedIn(user: User, db: Database) {
     const now = new Date();
-    const gmtPlus8Date = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const offset = now.getTimezoneOffset() / 60;
+    const gmtPlus8Date =
+      offset === -8
+        ? now
+        : new Date(now.getTime() + (8 + offset) * 60 * 60 * 1000);
     const dateString = gmtPlus8Date.toISOString().split('T')[0];
 
     let isCheckedIn = false;
@@ -96,15 +104,24 @@ export class LoginComponent {
     return isCheckedIn;
   }
 
+  onFeedback() {
+    window.open('https://forms.gle/3Pk12Zefhtdo6evx5', '_blank');
+  }
+
   addAttendees(user: User, db: Database) {
     const now = new Date();
-    const gmtPlus8Date = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const offset = now.getTimezoneOffset() / 60;
+    const gmtPlus8Date =
+      offset === -8
+        ? now
+        : new Date(now.getTime() + (8 + offset) * 60 * 60 * 1000);
     const dateString = gmtPlus8Date.toISOString().split('T')[0];
 
     const dbRef = ref(db, `attendees/${dateString}/${user.uid}`);
     set(dbRef, {
       email: user.email,
       name: user.displayName,
+      phone: user.phoneNumber,
     });
   }
 
@@ -116,8 +133,9 @@ export class LoginComponent {
         const adminsList = adminsString.split(',');
 
         isAdmins = adminsList.includes(user.email!);
+      } else {
+        isAdmins = false;
       }
-      isAdmins = false;
     });
 
     return isAdmins;
