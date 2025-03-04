@@ -1,13 +1,13 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: '${{ secrets.FIREBASE_apiKey }}',
-    authDomain: '${{ secrets.FIREBASE_authDomain }}',
-    projectId: '${{ secrets.FIREBASE_projectId }}',
-    storageBucket: '${{ secrets.FIREBASE_storageBucket }}',
-    messagingSenderId: '${{ secrets.FIREBASE_messagingSenderId }}',
-    appId: '${{ secrets.FIREBASE_appId }}',
-    measurementId: '${{ secrets.FIREBASE_measurementId }}',
-    databaseURL: '${{ secrets.FIREBASE_databaseURL }}',
+    apiKey: '#{FIREBASE_apiKey}#',
+    authDomain: '#{FIREBASE_authDomain}#',
+    projectId: '#{FIREBASE_projectId}#',
+    storageBucket: '#{FIREBASE_storageBucket}#',
+    messagingSenderId: '#{FIREBASE_messagingSenderId}#',
+    appId: '#{FIREBASE_appId}#',
+    measurementId: '#{FIREBASE_measurementId}#',
+    databaseURL: '#{FIREBASE_databaseURL}#',
   },
 };

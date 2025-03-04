@@ -9,18 +9,22 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    environment: master
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
+      - uses: cschleiden/replace-tokens@v1.3
+        with:
+          files: "[environment.*.ts]"
         env:
-          secrets.FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
-          secrets.FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
-          secrets.FIREBASE_projectId: ${{ secrets.FIREBASE_projectId }}
-          secrets.FIREBASE_storageBucket: ${{ secrets.FIREBASE_storageBucket }}
-          secrets.FIREBASE_messagingSenderId: ${{ secrets.FIREBASE_messagingSenderId }}
-          secrets.FIREBASE_appId: ${{ secrets.FIREBASE_appId }}
-          secrets.FIREBASE_measurementId: ${{ secrets.FIREBASE_measurementId }}
-          secrets.FIREBASE_databaseURL: ${{ secrets.FIREBASE_databaseURL }}
+          FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
+          FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
+          FIREBASE_projectId: ${{ secrets.FIREBASE_projectId }}
+          FIREBASE_storageBucket: ${{ secrets.FIREBASE_storageBucket }}
+          FIREBASE_messagingSenderId: ${{ secrets.FIREBASE_messagingSenderId }}
+          FIREBASE_appId: ${{ secrets.FIREBASE_appId }}
+          FIREBASE_measurementId: ${{ secrets.FIREBASE_measurementId }}
+          FIREBASE_databaseURL: ${{ secrets.FIREBASE_databaseURL }}
+      - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
