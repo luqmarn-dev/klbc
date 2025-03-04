@@ -27,4 +27,3 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KLBC_938A9 }}
           channelId: live
           projectId: klbc-938a9
-          target: https://klbc-login.web.app

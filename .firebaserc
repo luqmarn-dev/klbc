@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "klbc-938a9"
-  }
+  },
+  "targets": {
+    "klbc-938a9": {
+      "hosting": {
+        "klbc-login": [
+          "hosting"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
