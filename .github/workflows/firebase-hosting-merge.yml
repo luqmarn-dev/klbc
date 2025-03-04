@@ -16,7 +16,7 @@ jobs:
           from_file: environment.prod.ts
           to_file: environment.prod.ts
         env:
-          secrets.FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
+          secrets.FIREBASE_apiKey: ${{ secrets.GITHUB_TOKEN}}
           secrets.FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
           secrets.FIREBASE_projectId: ${{ secrets.FIREBASE_projectId }}
           secrets.FIREBASE_storageBucket: ${{ secrets.FIREBASE_storageBucket }}
