@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "target": "klbc-login",
+    "site": "klbc-login",
     "public": "dist/klbc/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
