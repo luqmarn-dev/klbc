@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cschleiden/replace-tokens@v1.3
+        with:
+          files: '["environment.*/**.ts"]'
         env:
           FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
           FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
