@@ -15,6 +15,8 @@ jobs:
       - uses: cschleiden/replace-tokens@v1.3
         with:
           files: 'environment.prod.ts'
+          tokenPrefix: '#{'
+          tokenSuffix: '}#'
         env:
           FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
           FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
