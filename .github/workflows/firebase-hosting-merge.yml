@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
+      - uses: franzbischoff/replace_envs@v2
+        with:
+          from_file: environment.prod.ts
+          to_file: environment.prod.ts
         env:
           secrets.FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
           secrets.FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
@@ -21,6 +24,7 @@ jobs:
           secrets.FIREBASE_appId: ${{ secrets.FIREBASE_appId }}
           secrets.FIREBASE_measurementId: ${{ secrets.FIREBASE_measurementId }}
           secrets.FIREBASE_databaseURL: ${{ secrets.FIREBASE_databaseURL }}
+      - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
