@@ -13,8 +13,18 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        env:
+          FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
+          FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
+          FIREBASE_projectId: ${{ secrets.FIREBASE_projectId }}
+          FIREBASE_storageBucket: ${{ secrets.FIREBASE_storageBucket }}
+          FIREBASE_messagingSenderId: ${{ secrets.FIREBASE_messagingSenderId }}
+          FIREBASE_appId: ${{ secrets.FIREBASE_appId }}
+          FIREBASE_measurementId: ${{ secrets.FIREBASE_measurementId }}
+          FIREBASE_databaseURL: ${{ secrets.FIREBASE_databaseURL }}
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KLBC_938A9 }}
           channelId: live
           projectId: klbc-938a9
+          target: https://klbc-login.web.app
