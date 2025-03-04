@@ -12,15 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci && npm run build
-      - run: |
-          sed -i 's/\${{ secrets.FIREBASE_apiKey }}/${{ secrets.FIREBASE_apiKey }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_authDomain }}/${{ secrets.FIREBASE_authDomain }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_projectId }}/${{ secrets.FIREBASE_projectId }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_storageBucket }}/${{ secrets.FIREBASE_storageBucket }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_messagingSenderId }}/${{ secrets.FIREBASE_messagingSenderId }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_appId }}/${{ secrets.FIREBASE_appId }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_measurementId }}/${{ secrets.FIREBASE_measurementId }}/' ./src/environments/environment.prod.ts
-          sed -i 's/\${{ secrets.FIREBASE_databaseURL }}/${{ secrets.FIREBASE_databaseURL }}/' ./src/environments/environment.prod.ts
+        env:
+          secrets.FIREBASE_apiKey: ${{ secrets.FIREBASE_apiKey }}
+          secrets.FIREBASE_authDomain: ${{ secrets.FIREBASE_authDomain }}
+          secrets.FIREBASE_projectId: ${{ secrets.FIREBASE_projectId }}
+          secrets.FIREBASE_storageBucket: ${{ secrets.FIREBASE_storageBucket }}
+          secrets.FIREBASE_messagingSenderId: ${{ secrets.FIREBASE_messagingSenderId }}
+          secrets.FIREBASE_appId: ${{ secrets.FIREBASE_appId }}
+          secrets.FIREBASE_measurementId: ${{ secrets.FIREBASE_measurementId }}
+          secrets.FIREBASE_databaseURL: ${{ secrets.FIREBASE_databaseURL }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
