@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ImageModule } from 'primeng/image';
+import { CardModule } from 'primeng/card';
 import {
   Auth,
   getRedirectResult,
@@ -24,7 +25,7 @@ import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ButtonModule, ImageModule],
+  imports: [CommonModule, ButtonModule, ImageModule, CardModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -46,42 +47,12 @@ export class LoginComponent {
 
     this.notSaturday = gmtPlus8Date.getDay() !== 6;
   }
-  login() {
-    signInWithPopup(this.auth, new GoogleAuthProvider())
-      .then(async (result) => {
-        const user = result.user;
-        const db = getDatabase();
+  googleLogin() {
+    this.sharedService.googleLogin();
+  }
 
-        if (!this.notSaturday && (await this.isAdmins(user, db))) {
-          this.router.navigate(['/admin']);
-          return;
-        }
-
-        if (await this.isCheckedIn(user, db)) {
-          if (await this.isAdmins(user, db)) {
-            this.router.navigate(['/admin']);
-            return;
-          } else {
-            this.checkedIn = true;
-            return;
-          }
-        }
-
-        this.addAttendees(user, db);
-
-        if (await this.isAdmins(user, db)) {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/feedback']);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-      });
+  emailLogin() {
+    this.router.navigate(['/login-email']);
   }
 
   private async isCheckedIn(user: User, db: Database) {
