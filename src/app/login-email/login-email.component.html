@@ -27,13 +27,18 @@
         styleClass="w-80 button-continue"
         label="Continue"
         [disabled]="emailForm.invalid || emailForm.pristine"
+        (click)="continueWithEmail()"
       ></p-button>
     </div>
     <div class="flex row justify-center mt-3 animate-[fadein_1s_ease-out]">
       or
     </div>
     <div class="flex row justify-center mt-3 animate-[fadein_1s_ease-out]">
-      <p-button styleClass="button-sso w-80" label="Sign in with Google">
+      <p-button
+        (click)="googleLogin()"
+        styleClass="button-sso w-80"
+        label="Sign in with Google"
+      >
         <ng-template #icon>
           <svg
             version="1.1"

@@ -55,26 +55,6 @@ export class LoginComponent {
     this.router.navigate(['/login-email']);
   }
 
-  private async isCheckedIn(user: User, db: Database) {
-    const now = new Date();
-    const offset = now.getTimezoneOffset() / 60;
-    const gmtPlus8Date =
-      offset === -8
-        ? now
-        : new Date(now.getTime() + (8 + offset) * 60 * 60 * 1000);
-    const dateString = gmtPlus8Date.toISOString().split('T')[0];
-
-    let isCheckedIn = false;
-
-    await get(ref(db, `attendees/${dateString}/${user.uid}`)).then(
-      (snapshot) => {
-        isCheckedIn = snapshot.exists();
-      }
-    );
-
-    return isCheckedIn;
-  }
-
   onFeedback() {
     window.open('https://forms.gle/3Pk12Zefhtdo6evx5', '_blank');
   }
@@ -94,21 +74,5 @@ export class LoginComponent {
       name: user.displayName,
       phone: user.phoneNumber,
     });
-  }
-
-  async isAdmins(user: User, db: Database) {
-    let isAdmins = false;
-    await get(ref(db, 'admins')).then((snapshot) => {
-      if (snapshot.exists()) {
-        const adminsString = snapshot.val() as string;
-        const adminsList = adminsString.split(',');
-
-        isAdmins = adminsList.includes(user.email!);
-      } else {
-        isAdmins = false;
-      }
-    });
-
-    return isAdmins;
   }
 }

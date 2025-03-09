@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Gym } from './models/gymEnum';
 import {
   Auth,
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
   User,
@@ -23,6 +24,7 @@ export class SharedService {
     checkInCount: 0,
   };
   public currentDate: Date;
+  public isLoading = false;
 
   private db = inject(Database);
   private checkedIn = false;
@@ -44,26 +46,7 @@ export class SharedService {
         this.currentUser.email = result.user!.email!;
         this.currentUser.uid = result.user!.uid;
 
-        await this.getUserDetail();
-        await this.isCheckedIn();
-
-        if (this.currentUser.fullName === '') {
-          if (
-            (!this.isSaturday && (await this.isAdmins())) ||
-            this.isSaturday
-          ) {
-            // go to get user detail
-          }
-          return;
-        }
-
-        if (this.isSaturday && (await this.isAdmins())) {
-          this.router.navigate(['/admin']);
-        } else if (this.isSaturday && this.checkedIn) {
-          // go to checked in
-        } else {
-          // go to verify
-        }
+        await this.loggedInProcess();
       })
       .catch((error) => {
         console.log(error);
@@ -100,7 +83,7 @@ export class SharedService {
     });
   }
 
-  private async getUserDetail() {
+  async getUserDetail() {
     await get(ref(this.db, `users/${this.currentUser.uid}`)).then(
       (snapshot) => {
         if (snapshot.exists()) {
@@ -118,5 +101,54 @@ export class SharedService {
         }
       }
     );
+  }
+
+  async loggedInProcess() {
+    await this.getUserDetail();
+    await this.isCheckedIn();
+
+    if (this.currentUser.fullName === '') {
+      if ((!this.isSaturday && (await this.isAdmins())) || this.isSaturday) {
+        this.isLoading = false;
+        // go to get user detail
+      }
+      return;
+    }
+
+    if (this.isSaturday && (await this.isAdmins())) {
+      this.isLoading = false;
+
+      this.router.navigate(['/admin']);
+    } else if (this.isSaturday && this.checkedIn) {
+      // go to checked in
+      this.isLoading = false;
+    } else {
+      // go to verify
+      this.isLoading = false;
+    }
+  }
+
+  async createAccount(password: string) {
+    this.isLoading = true;
+
+    createUserWithEmailAndPassword(this.auth, this.currentUser.email, password)
+      .then(async (userCredential) => {
+        this.currentUser.uid = userCredential.user.uid;
+        await this.createUserDb();
+        await this.loggedInProcess();
+      })
+      .catch((error) => {
+        console.error('Error creating user:', error);
+      });
+  }
+
+  private async createUserDb() {
+    const dbRef = ref(this.db, `users/${this.currentUser.uid}`);
+    await set(dbRef, {
+      fullName: this.currentUser.fullName,
+      email: this.currentUser.email,
+      phone: this.currentUser.phoneNumber,
+      checkInCount: 0,
+    });
   }
 }

@@ -13,6 +13,7 @@ import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeng/themes';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { environment } from '../environments/environment'; // Import environment
+import { provideHttpClient } from '@angular/common/http';
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -60,5 +61,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAuth(() => getAuth()),
+    provideHttpClient(),
   ],
 };
