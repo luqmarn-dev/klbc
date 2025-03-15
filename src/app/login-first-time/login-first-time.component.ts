@@ -1,38 +1,32 @@
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { ImageModule } from 'primeng/image';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from 'primeng/autocomplete';
-import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { ImageModule } from 'primeng/image';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { SharedService } from '../shared.service';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
-  selector: 'app-register-new',
+  selector: 'app-login-first-time',
   imports: [
-    FormsModule,
-    ButtonModule,
-    ImageModule,
-    FloatLabelModule,
-    PasswordModule,
-    InputTextModule,
-    AutoCompleteModule,
-    CommonModule,
     InputNumberModule,
+    ButtonModule,
+    CommonModule,
+    FormsModule,
+    AutoCompleteModule,
+    ImageModule,
+    InputTextModule,
   ],
-  templateUrl: './register-new.component.html',
-  styleUrl: './register-new.component.scss',
+  templateUrl: './login-first-time.component.html',
+  styleUrl: './login-first-time.component.scss',
 })
-export class RegisterNewComponent implements OnInit {
-  password = '';
+export class LoginFirstTimeComponent implements OnInit {
   fullName = '';
   phoneNumber = null;
   countryCodeList!: {
@@ -48,11 +42,7 @@ export class RegisterNewComponent implements OnInit {
 
   selectedDialCode = 60;
 
-  constructor(
-    private http: HttpClient,
-    private auth: Auth,
-    private sharedService: SharedService
-  ) {}
+  constructor(private http: HttpClient, private sharedService: SharedService) {}
 
   ngOnInit() {
     this.fetchCountryCodes();
@@ -90,13 +80,5 @@ export class RegisterNewComponent implements OnInit {
     }
 
     this.filteredCountries = filtered;
-  }
-
-  async continueWithPassword() {
-    this.sharedService.currentUser.fullName = this.fullName;
-    this.sharedService.currentUser.phoneNumber = Number(
-      `${this.selectedDialCode}${this.phoneNumber}`
-    );
-    await this.sharedService.createAccount(this.password);
   }
 }

@@ -1,0 +1,70 @@
+<div class="flex grid grid-rows-20 h-screen">
+  <div class="flex row-span-8 items-center grid justify-center">
+    <p-image
+      width="250"
+      src="images/logo_light.png"
+      alt="Bouldering Club Logo"
+    />
+  </div>
+
+  <!-- Login Card -->
+  <div class="login-card row-span-12 min-h-[500px]">
+    <div class="text-2xl font-bold animate-[fadein_1s_ease-out]">
+      Enter your details
+    </div>
+    <div class="text-xs font-light animate-[fadein_1s_ease-out] mt-1">
+      For first-time login, we will need these information
+    </div>
+    <div class="text-xl animate-[fadein_1s_ease-out] mt-4">Your full name</div>
+    <div class="flex row justify-center mt-3 animate-[fadein_1s_ease-out]">
+      <input
+        #nameForm="ngModel"
+        class="w-80"
+        id="name"
+        type="text"
+        placeholder="Enter your full name"
+        pInputText
+        [(ngModel)]="fullName"
+      />
+    </div>
+    <div class="text-xl animate-[fadein_1s_ease-out] mt-4">
+      Your phone number
+    </div>
+    <div class="text-xs font-light animate-[fadein_1s_ease-out] mt-1">
+      We need your number to verify attendance with the gym
+    </div>
+    <div class="flex row justify-start mt-3 animate-[fadein_1s_ease-out]">
+      <p-autocomplete
+        [(ngModel)]="selectedDialCode"
+        [suggestions]="filteredCountries"
+        (completeMethod)="filterCountry($event)"
+        optionLabel="dial_code"
+        optionValue="dial_code"
+        inputStyleClass="w-18"
+        required="true"
+        [forceSelection]="true"
+      >
+        <ng-template let-country #item>
+          <div class="flex items-center gap-2">
+            <div>{{ country.flag }}</div>
+            <div>{{ country.dial_code }}</div>
+            <div>{{ country.name }}</div>
+          </div>
+        </ng-template>
+      </p-autocomplete>
+      <p-inputnumber
+        [useGrouping]="false"
+        [(ngModel)]="phoneNumber"
+        maxlength="11"
+        required="true"
+      />
+    </div>
+    <div class="flex row justify-center mt-9 animate-[fadein_1s_ease-out]">
+      <p-button
+        styleClass="w-80 button-continue"
+        label="Continue"
+        [disabled]="!fullName || !selectedDialCode || !phoneNumber"
+      ></p-button>
+    </div>
+  </div>
+</div>

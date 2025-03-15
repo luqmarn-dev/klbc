@@ -5,7 +5,6 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ImageModule } from 'primeng/image';
 import { PasswordModule } from 'primeng/password';
 import { SharedService } from '../shared.service';
-import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { ToastModule } from 'primeng/toast';
 @Component({
@@ -25,11 +24,7 @@ export class LoginPasswordComponent {
   password = '';
   isLoading = false;
 
-  constructor(
-    private sharedService: SharedService,
-    private router: Router,
-    private auth: Auth
-  ) {}
+  constructor(private sharedService: SharedService, private auth: Auth) {}
 
   continueWithPassword() {
     this.isLoading = true;

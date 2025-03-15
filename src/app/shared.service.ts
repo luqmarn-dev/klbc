@@ -9,6 +9,7 @@ import {
 } from '@angular/fire/auth';
 import { Database, get, getDatabase, ref, set } from '@angular/fire/database';
 import { Router } from '@angular/router';
+import { LocalUser } from './models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -16,15 +17,17 @@ import { Router } from '@angular/router';
 export class SharedService {
   public gym: Gym = Gym.Batuu;
   public isSaturday = true;
-  public currentUser = {
+  public currentUser: LocalUser = {
     email: '',
     uid: '',
     fullName: '',
-    phoneNumber: '',
+    phoneNumber: 0,
     checkInCount: 0,
   };
   public currentDate: Date;
   public isLoading = false;
+  public isAdmin = false;
+  public isFirstTime = false;
 
   private db = inject(Database);
   private checkedIn = false;
@@ -90,7 +93,7 @@ export class SharedService {
           const userDetail = snapshot.val() as {
             fullName: string;
             email: string;
-            phone: string;
+            phone: number;
             checkInCount: number;
           };
 
@@ -98,6 +101,8 @@ export class SharedService {
           this.currentUser.email = userDetail.email;
           this.currentUser.phoneNumber = userDetail.phone;
           this.currentUser.checkInCount = userDetail.checkInCount;
+
+          this.isFirstTime = this.currentUser.checkInCount === 0;
         }
       }
     );
@@ -106,25 +111,45 @@ export class SharedService {
   async loggedInProcess() {
     await this.getUserDetail();
     await this.isCheckedIn();
+    this.isAdmin = await this.isAdmins();
 
-    if (this.currentUser.fullName === '') {
-      if ((!this.isSaturday && (await this.isAdmins())) || this.isSaturday) {
-        this.isLoading = false;
-        // go to get user detail
-      }
+    if (this.isFirstTimeLogin()) {
+      await this.handleFirstTimeLogin();
       return;
     }
 
-    if (this.isSaturday && (await this.isAdmins())) {
-      this.isLoading = false;
+    if (this.isAdmin) {
+      this.handleAdminLogin();
+    } else if (this.isSaturday) {
+      await this.handleSaturdayLogin();
+    }
+  }
 
+  private isFirstTimeLogin(): boolean {
+    return this.currentUser.fullName === '';
+  }
+
+  private async handleFirstTimeLogin() {
+    if ((!this.isSaturday && this.isAdmin) || this.isSaturday) {
+      this.isLoading = false;
+      this.router.navigate(['/login-first-time']);
+    }
+  }
+
+  private handleAdminLogin() {
+    if (!this.isSaturday) {
+      this.isLoading = false;
       this.router.navigate(['/admin']);
-    } else if (this.isSaturday && this.checkedIn) {
-      // go to checked in
+    }
+  }
+
+  private async handleSaturdayLogin() {
+    if (this.checkedIn) {
       this.isLoading = false;
+      this.router.navigate(['/checked-in']);
     } else {
-      // go to verify
       this.isLoading = false;
+      this.router.navigate(['/verify']);
     }
   }
 
