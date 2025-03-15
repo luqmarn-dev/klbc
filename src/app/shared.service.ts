@@ -27,7 +27,7 @@ export class SharedService {
   public currentDate: Date;
   public isLoading = false;
   public isAdmin = false;
-  public isFirstTime = false;
+  public isFirstTime = true;
 
   private db = inject(Database);
   private checkedIn = false;
@@ -111,45 +111,30 @@ export class SharedService {
   async loggedInProcess() {
     await this.getUserDetail();
     await this.isCheckedIn();
+
     this.isAdmin = await this.isAdmins();
 
-    if (this.isFirstTimeLogin()) {
-      await this.handleFirstTimeLogin();
+    if (this.currentUser.fullName === '') {
+      if ((!this.isSaturday && (await this.isAdmins())) || this.isSaturday) {
+        this.isLoading = false;
+        this.router.navigate(['/login-first-time']);
+      }
       return;
     }
 
-    if (this.isAdmin) {
-      this.handleAdminLogin();
-    } else if (this.isSaturday) {
-      await this.handleSaturdayLogin();
-    }
-  }
-
-  private isFirstTimeLogin(): boolean {
-    return this.currentUser.fullName === '';
-  }
-
-  private async handleFirstTimeLogin() {
-    if ((!this.isSaturday && this.isAdmin) || this.isSaturday) {
-      this.isLoading = false;
-      this.router.navigate(['/login-first-time']);
-    }
-  }
-
-  private handleAdminLogin() {
-    if (!this.isSaturday) {
+    if (!this.isSaturday && this.isAdmin) {
       this.isLoading = false;
       this.router.navigate(['/admin']);
     }
-  }
 
-  private async handleSaturdayLogin() {
-    if (this.checkedIn) {
-      this.isLoading = false;
-      this.router.navigate(['/checked-in']);
-    } else {
-      this.isLoading = false;
-      this.router.navigate(['/verify']);
+    if (this.isSaturday) {
+      if (this.checkedIn) {
+        this.isLoading = false;
+        this.router.navigate(['/checked-in']);
+      } else {
+        this.isLoading = false;
+        this.router.navigate(['/verify']);
+      }
     }
   }
 
