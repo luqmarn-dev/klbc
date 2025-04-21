@@ -8,11 +8,17 @@ import {
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeng/themes';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { environment } from '../environments/environment'; // Import environment
+import { provideLottieOptions } from 'ngx-lottie';
+
+export function playerFactory() {
+  return import('lottie-web');
+}
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -60,5 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAuth(() => getAuth()),
+    provideAnimations(),
+    provideLottieOptions({player: playerFactory}),
   ],
 };

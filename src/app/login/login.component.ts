@@ -19,18 +19,24 @@ import {
   get,
   Database,
 } from '@angular/fire/database';
-import { Router } from '@angular/router';
+import { NavigationCancel, Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { SharedService } from '../shared.service';
+import { LottieComponent } from 'ngx-lottie';
+import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ButtonModule, ImageModule],
+  imports: [CommonModule, ButtonModule, ImageModule, LottieComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   checkedIn = false;
   notSaturday = true;
+  isLoading = false;
+  options: AnimationOptions = {
+    path: 'assets/Animation - 1741342452586.lottie',
+  }
 
   constructor(
     public auth: Auth,
@@ -44,7 +50,17 @@ export class LoginComponent {
         ? now
         : new Date(now.getTime() + (8 + offset) * 60 * 60 * 1000);
 
-    this.notSaturday = gmtPlus8Date.getDay() !== 6;
+        //TODO CHANGE BACK TO !==
+    this.notSaturday = gmtPlus8Date.getDay() === 6;
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.isLoading = true;
+      }
+      if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
+        this.isLoading = false;
+      }
+    })
   }
   login() {
     signInWithPopup(this.auth, new GoogleAuthProvider())
@@ -140,4 +156,6 @@ export class LoginComponent {
 
     return isAdmins;
   }
+
+  
 }

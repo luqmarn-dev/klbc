@@ -11,6 +11,10 @@
       >
         KLBC Check In
       </h2>
+
+      <div *ngif="isLoading" class="loading-indicator">
+        <ng-lottie [options] = "options"></ng-lottie>
+      </div>
       <h2
         *ngIf="(auth.currentUser || checkedIn) && !notSaturday"
         class="text-center text-gochi text-white fadein animation-duration-1000"
