@@ -1,0 +1,48 @@
+<div class="flex grid grid-rows-20 h-screen">
+  <div class="flex row-span-7 items-center grid justify-center">
+    <p-image
+      width="250"
+      src="images/logo_light.png"
+      alt="Bouldering Club Logo"
+    />
+  </div>
+
+  <!-- Login Card -->
+  <div class="login-card row-span-13 min-h-[550px]">
+    <div class="text-2xl title font-bold animate-[fadein_1s_ease-out]">
+      Please verify your information!
+    </div>
+    <div class="text-xl animate-[fadein_1s_ease-out] mt-4">Your full name</div>
+    <div class="text-md font-light animate-[fadein_1s_ease-out] mt-1">
+      {{ currentUser.fullName }}
+    </div>
+    <div class="text-xl animate-[fadein_1s_ease-out] mt-4">
+      Your phone number
+    </div>
+    <div class="text-md font-light animate-[fadein_1s_ease-out] mt-1">
+      +{{ currentUser.phoneNumber }}
+    </div>
+    <div class="text-xl animate-[fadein_1s_ease-out] mt-4">Meetup Date</div>
+    <div class="text-md font-light animate-[fadein_1s_ease-out] mt-1">
+      {{ currentDate | date : "longDate" }}
+    </div>
+    <div class="text-xl animate-[fadein_1s_ease-out] mt-4">Gym Location</div>
+    <div class="text-md font-light animate-[fadein_1s_ease-out] mt-1">
+      BUMP, Jaya One
+    </div>
+    <div class="flex row justify-center mt-8 animate-[fadein_1s_ease-out]">
+      <p-button
+        styleClass="w-80 button-continue"
+        (click)="checkIn()"
+        label="Continue"
+      ></p-button>
+    </div>
+    <div class="flex row justify-center mt-1 animate-[fadein_1s_ease-out]">
+      <p-button
+        styleClass="w-80"
+        (click)="cancel()"
+        label="This is not me!"
+      ></p-button>
+    </div>
+  </div>
+</div>
